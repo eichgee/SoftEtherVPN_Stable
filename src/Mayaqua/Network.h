@@ -913,6 +913,7 @@ struct CONNECT_TCP_RUDP_PARAM
 	UINT Port;
 	UINT Timeout;
 	char Hostname[MAX_SIZE];
+	char Sni[MAX_SIZE];
 	bool *CancelFlag;
 	UINT NatT_ErrorCode;
 	char SvcName[MAX_SIZE];
@@ -1398,7 +1399,7 @@ SOCK *Connect(char *hostname, UINT port);
 SOCK *ConnectEx(char *hostname, UINT port, UINT timeout);
 SOCK *ConnectEx2(char *hostname, UINT port, UINT timeout, bool *cancel_flag);
 SOCK *ConnectEx3(char *hostname, UINT port, UINT timeout, bool *cancel_flag, char *nat_t_svc_name, UINT *nat_t_error_code, bool try_start_ssl, bool ssl_no_tls, bool no_get_hostname);
-SOCK *ConnectEx4(char *hostname, UINT port, UINT timeout, bool *cancel_flag, char *nat_t_svc_name, UINT *nat_t_error_code, bool try_start_ssl, bool ssl_no_tls, bool no_get_hostname, IP *ret_ip);
+SOCK *ConnectEx4(char *hostname, UINT port, UINT timeout, bool *cancel_flag, char *nat_t_svc_name, UINT *nat_t_error_code, bool try_start_ssl, bool ssl_no_tls, bool no_get_hostname, IP *ret_ip, char *sni);
 SOCKET ConnectTimeoutIPv4(IP *ip, UINT port, UINT timeout, bool *cancel_flag);
 void SetSocketSendRecvBufferSize(SOCKET s, UINT size);
 UINT GetSocketBufferSize(SOCKET s, bool send);

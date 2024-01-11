@@ -2189,7 +2189,7 @@ void TtcThread(THREAD *thread, void *param)
 			IPToStr(target_host, sizeof(target_host), &ip_ret);
 		}
 
-		s = ConnectEx4(target_host, ttc->Port, 0, ttc->Cancel, NULL, NULL, false, false, true, &ip_ret);
+		s = ConnectEx4(target_host, ttc->Port, 0, ttc->Cancel, NULL, NULL, false, false, true, &ip_ret, NULL);
 
 		if (s == NULL)
 		{
@@ -4227,6 +4227,7 @@ UINT PcAccountCreate(CONSOLE *c, char *cmd_name, wchar_t *str, void *param)
 		{"HUB", CmdPrompt, _UU("CMD_AccountCreate_Prompt_Hub"), CmdEvalSafe, NULL},
 		{"USERNAME", CmdPrompt, _UU("CMD_AccountCreate_Prompt_Username"), CmdEvalNotEmpty, NULL},
 		{"NICNAME", CmdPrompt, _UU("CMD_AccountCreate_Prompt_Nicname"), CmdEvalNotEmpty, NULL},
+		{"SNI", CmdPrompt, _UU("CMD_AccountCreate_Prompt_Sni"), CmdEvalSafe, NULL},
 	};
 
 	// Get the parameter list
@@ -4246,6 +4247,7 @@ UINT PcAccountCreate(CONSOLE *c, char *cmd_name, wchar_t *str, void *param)
 	t.ClientOption->Port = port;
 	StrCpy(t.ClientOption->Hostname, sizeof(t.ClientOption->Hostname), host);
 	StrCpy(t.ClientOption->HubName, sizeof(t.ClientOption->HubName), GetParamStr(o, "HUB"));
+	StrCpy(t.ClientOption->Sni, sizeof(t.ClientOption->Sni), GetParamStr(o, "SNI"));
 	t.ClientOption->NumRetry = INFINITE;
 	t.ClientOption->RetryInterval = 15;
 	t.ClientOption->MaxConnection = 1;
@@ -4295,6 +4297,7 @@ UINT PcAccountSet(CONSOLE *c, char *cmd_name, wchar_t *str, void *param)
 		{"[name]", CmdPrompt, _UU("CMD_AccountCreate_Prompt_Name"), CmdEvalNotEmpty, NULL},
 		{"SERVER", CmdPrompt, _UU("CMD_AccountCreate_Prompt_Server"), CmdEvalHostAndPort, NULL},
 		{"HUB", CmdPrompt, _UU("CMD_AccountCreate_Prompt_Hub"), CmdEvalSafe, NULL},
+		{"SNI", CmdPrompt, _UU("CMD_AccountCreate_Prompt_Sni"), CmdEvalSafe, NULL},
 	};
 
 	// Get the parameter list
@@ -4321,6 +4324,7 @@ UINT PcAccountSet(CONSOLE *c, char *cmd_name, wchar_t *str, void *param)
 		t.ClientOption->Port = port;
 		StrCpy(t.ClientOption->Hostname, sizeof(t.ClientOption->Hostname), host);
 		StrCpy(t.ClientOption->HubName, sizeof(t.ClientOption->HubName), GetParamStr(o, "HUB"));
+		StrCpy(t.ClientOption->Sni, sizeof(t.ClientOption->Sni), GetParamStr(o, "SNI"));
 
 		Zero(&c, sizeof(c));
 
@@ -4396,6 +4400,9 @@ UINT PcAccountGet(CONSOLE *c, char *cmd_name, wchar_t *str, void *param)
 		// Virtual HUB name of the destination VPN Server
 		StrToUni(tmp, sizeof(tmp), t.ClientOption->HubName);
 		CtInsert(ct, _UU("CMD_ACCOUNT_COLUMN_HUBNAME"), tmp);
+
+		StrToUni(tmp, sizeof(tmp), t.ClientOption->Sni);
+		CtInsert(ct, _UU("CMD_ACCOUNT_COLUMN_SNI"), tmp);
 
 		// Type of proxy server to go through
 		CtInsert(ct, _UU("CMD_ACCOUNT_COLUMN_PROXY_TYPE"), GetProxyTypeStr(t.ClientOption->ProxyType));
@@ -12343,6 +12350,7 @@ UINT PsCascadeCreate(CONSOLE *c, char *cmd_name, wchar_t *str, void *param)
 		{"SERVER", CmdPrompt, _UU("CMD_CascadeCreate_Prompt_Server"), CmdEvalHostAndPort, NULL},
 		{"HUB", CmdPrompt, _UU("CMD_CascadeCreate_Prompt_Hub"), CmdEvalSafe, NULL},
 		{"USERNAME", CmdPrompt, _UU("CMD_CascadeCreate_Prompt_Username"), CmdEvalNotEmpty, NULL},
+	    {"SNI", CmdPrompt, _UU("CMD_CascadeCreate_Prompt_Sni"), CmdEvalSafe, NULL},
 	};
 	
 	// If virtual HUB is not selected, it's an error
@@ -12372,6 +12380,7 @@ UINT PsCascadeCreate(CONSOLE *c, char *cmd_name, wchar_t *str, void *param)
 	t.ClientOption->Port = port;
 	StrCpy(t.ClientOption->Hostname, sizeof(t.ClientOption->Hostname), host);
 	StrCpy(t.ClientOption->HubName, sizeof(t.ClientOption->HubName), GetParamStr(o, "HUB"));
+	StrCpy(t.ClientOption->Sni, sizeof(t.ClientOption->Sni), GetParamStr(o, "SNI"));
 	t.ClientOption->NumRetry = INFINITE;
 	t.ClientOption->RetryInterval = 15;
 	t.ClientOption->MaxConnection = 8;
@@ -12419,6 +12428,7 @@ UINT PsCascadeSet(CONSOLE *c, char *cmd_name, wchar_t *str, void *param)
 		{"[name]", CmdPrompt, _UU("CMD_CascadeCreate_Prompt_Name"), CmdEvalNotEmpty, NULL},
 		{"SERVER", CmdPrompt, _UU("CMD_CascadeCreate_Prompt_Server"), CmdEvalHostAndPort, NULL},
 		{"HUB", CmdPrompt, _UU("CMD_CascadeCreate_Prompt_Hub"), CmdEvalSafe, NULL},
+		{"SNI", CmdPrompt, _UU("CMD_CascadeCreate_Prompt_Sni"), CmdEvalSafe, NULL},
 	};
 	
 	// If virtual HUB is not selected, it's an error
@@ -12455,6 +12465,7 @@ UINT PsCascadeSet(CONSOLE *c, char *cmd_name, wchar_t *str, void *param)
 	t.ClientOption->Port = port;
 	StrCpy(t.ClientOption->Hostname, sizeof(t.ClientOption->Hostname), host);
 	StrCpy(t.ClientOption->HubName, sizeof(t.ClientOption->HubName), GetParamStr(o, "HUB"));
+	StrCpy(t.ClientOption->Sni, sizeof(t.ClientOption->Sni), GetParamStr(o, "SNI"));
 
 	Free(host);
 
@@ -12570,6 +12581,9 @@ UINT PsCascadeGet(CONSOLE *c, char *cmd_name, wchar_t *str, void *param)
 		// Virtual HUB name of the destination VPN Server
 		StrToUni(tmp, sizeof(tmp), t.ClientOption->HubName);
 		CtInsert(ct, _UU("CMD_ACCOUNT_COLUMN_HUBNAME"), tmp);
+
+		StrToUni(tmp, sizeof(tmp), t.ClientOption->Sni);
+		CtInsert(ct, _UU("CMD_ACCOUNT_COLUMN_SNI"), tmp);
 
 		// Type of proxy server to go through
 		CtInsert(ct, _UU("CMD_ACCOUNT_COLUMN_PROXY_TYPE"), GetProxyTypeStr(t.ClientOption->ProxyType));

@@ -2293,6 +2293,7 @@ STATIC7					&Virtual Hub Name:
 STATIC8					Pro&xy Server as Relay:
 STATIC9					You can connect to a VPN Server via a proxy server.
 STATIC10				Proxy &Type:
+STATIC16				SNI:
 R_DIRECT_TCP			&Direct TCP/IP Connection (No Proxy)
 R_HTTPS					Connect via H&TTP Proxy Server
 R_SOCKS					Connect via &SOCKS Proxy Server

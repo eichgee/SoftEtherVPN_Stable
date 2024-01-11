@@ -286,7 +286,7 @@ bool ServerAccept(CONNECTION *c);
 bool ClientConnect(CONNECTION *c);
 SOCK *ClientConnectToServer(CONNECTION *c);
 SOCK *TcpIpConnect(char *hostname, UINT port, bool try_start_ssl, bool ssl_no_tls);
-SOCK *TcpIpConnectEx(char *hostname, UINT port, bool *cancel_flag, void *hWnd, UINT *nat_t_error_code, bool no_nat_t, bool try_start_ssl, bool ssl_no_tls, IP *ret_ip);
+SOCK *TcpIpConnectEx(char *hostname, UINT port, bool *cancel_flag, void *hWnd, UINT *nat_t_error_code, bool no_nat_t, bool try_start_ssl, bool ssl_no_tls, IP *ret_ip, char *sni);
 bool ClientUploadSignature(SOCK *s);
 bool ClientDownloadHello(CONNECTION *c, SOCK *s);
 bool ServerDownloadSignature(CONNECTION *c, char **error_detail_str);
@@ -294,7 +294,7 @@ bool ServerUploadHello(CONNECTION *c);
 bool ClientUploadAuth(CONNECTION *c);
 SOCK *ClientConnectGetSocket(CONNECTION *c, bool additional_connect, bool no_tls);
 SOCK *TcpConnectEx2(char *hostname, UINT port, UINT timeout, bool *cancel_flag, void *hWnd, bool try_start_ssl, bool ssl_no_tls);
-SOCK *TcpConnectEx3(char *hostname, UINT port, UINT timeout, bool *cancel_flag, void *hWnd, bool no_nat_t, UINT *nat_t_error_code, bool try_start_ssl, bool ssl_no_tls, IP *ret_ip);
+SOCK *TcpConnectEx3(char *hostname, UINT port, UINT timeout, bool *cancel_flag, void *hWnd, bool no_nat_t, UINT *nat_t_error_code, bool try_start_ssl, bool ssl_no_tls, IP *ret_ip, char *sni);
 
 void InitProtocol();
 void FreeProtocol();

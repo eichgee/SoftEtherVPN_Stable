@@ -6880,6 +6880,9 @@ void CmEditAccountDlgUpdate(HWND hWnd, CM_ACCOUNT *a)
 	GetTxtA(hWnd, E_HOSTNAME, a->ClientOption->Hostname, sizeof(a->ClientOption->Hostname));
 	Trim(a->ClientOption->Hostname);
 
+	GetTxtA(hWnd, E_SNI, a->ClientOption->Sni, sizeof(a->ClientOption->Sni));
+	Trim(a->ClientOption->Sni);
+
 	if (InStr(a->ClientOption->Hostname, "/tcp"))
 	{
 		Check(hWnd, R_DISABLE_NATT, true);
@@ -7322,6 +7325,8 @@ void CmEditAccountDlgInit(HWND hWnd, CM_ACCOUNT *a)
 	SetTextA(hWnd, E_HOSTNAME, a->ClientOption->Hostname);
 	StrCpy(a->old_server_name, sizeof(a->old_server_name), a->ClientOption->Hostname);
 
+	SetTextA(hWnd, E_SNI, a->ClientOption->Sni);
+
 	if (InStr(a->ClientOption->Hostname, "/tcp"))
 	{
 		Check(hWnd, R_DISABLE_NATT, true);
@@ -7579,6 +7584,7 @@ UINT CmEditAccountDlgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam, voi
 		{
 		case E_ACCOUNT_NAME:
 		case E_HOSTNAME:
+		case E_SNI:
 		case C_PORT:
 		case C_HUBNAME:
 		case R_DIRECT_TCP:

@@ -1202,6 +1202,8 @@
 #define ID_VPNGATE40108                 40108
 #define ID__40109                       40109
 #define CMD_VGS                         40110
+#define E_SNI                           40111
+#define S_STATIC16                      40112
 
 // Next default values for new objects
 // 

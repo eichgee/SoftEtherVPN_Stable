@@ -4611,6 +4611,7 @@ void InRpcClientOption(CLIENT_OPTION *c, PACK *p)
 
 	PackGetUniStr(p, "AccountName", c->AccountName, sizeof(c->AccountName));
 	PackGetStr(p, "Hostname", c->Hostname, sizeof(c->Hostname));
+	PackGetStr(p, "Sni", c->Sni, sizeof(c->Sni));
 	c->Port = PackGetInt(p, "Port");
 	c->PortUDP = PackGetInt(p, "PortUDP");
 	c->ProxyType = PackGetInt(p, "ProxyType");
@@ -4649,6 +4650,7 @@ void OutRpcClientOption(PACK *p, CLIENT_OPTION *c)
 
 	PackAddUniStr(p, "AccountName", c->AccountName);
 	PackAddStr(p, "Hostname", c->Hostname);
+	PackAddStr(p, "Sni", c->Sni);
 	PackAddStr(p, "ProxyName", c->ProxyName);
 	PackAddStr(p, "ProxyUsername", c->ProxyUsername);
 	PackAddStr(p, "ProxyPassword", c->ProxyPassword);
@@ -9596,6 +9598,7 @@ CLIENT_OPTION *CiLoadClientOption(FOLDER *f)
 
 	CfgGetUniStr(f, "AccountName", o->AccountName, sizeof(o->AccountName));
 	CfgGetStr(f, "Hostname", o->Hostname, sizeof(o->Hostname));
+	CfgGetStr(f, "Sni", o->Sni, sizeof(o->Sni));
 	o->Port = CfgGetInt(f, "Port");
 	o->PortUDP = CfgGetInt(f, "PortUDP");
 	o->ProxyType = CfgGetInt(f, "ProxyType");
@@ -10133,6 +10136,7 @@ void CiWriteClientOption(FOLDER *f, CLIENT_OPTION *o)
 
 	CfgAddUniStr(f, "AccountName", o->AccountName);
 	CfgAddStr(f, "Hostname", o->Hostname);
+	CfgAddStr(f, "Sni", o->Sni);
 	CfgAddInt(f, "Port", o->Port);
 	CfgAddInt(f, "PortUDP", o->PortUDP);
 	CfgAddInt(f, "ProxyType", o->ProxyType);

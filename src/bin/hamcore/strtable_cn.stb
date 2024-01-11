@@ -2313,6 +2313,7 @@ STATIC7						虚拟 HUB 名(&V):
 STATIC8						中继代理服务器(&X):
 STATIC9						您可以通过代理服务器连接到 VPN Server。
 STATIC10					代理类型(&T):
+STATIC16				    SNI:
 R_DIRECT_TCP				直接 TCP/IP 连接(无代理)(&D)
 R_HTTPS						通过 HTTP 代理服务器连接(&T)
 R_SOCKS						通过 SOCKS 代理服务器连接(&S)

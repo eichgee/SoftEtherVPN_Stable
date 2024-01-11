@@ -16163,7 +16163,14 @@ void ConnectThreadForTcp(THREAD *thread, void *param)
 		Unlock(p->CancelLock);
 
 		// Start the SSL communication
-		ssl_ret = StartSSLEx(sock, NULL, NULL, p->Tcp_SslNoTls, 0, p->Hostname);
+		if (p->Sni != NULL && IsEmptyStr(p->Sni) == false)
+		{
+			ssl_ret = StartSSLEx(sock, NULL, NULL, p->Tcp_SslNoTls, 0, p->Sni);
+		}
+		else
+		{
+			ssl_ret = StartSSLEx(sock, NULL, NULL, p->Tcp_SslNoTls, 0, p->Hostname);
+		}
 
 		if (ssl_ret)
 		{
@@ -16282,9 +16289,9 @@ SOCK *ConnectEx2(char *hostname, UINT port, UINT timeout, bool *cancel_flag)
 SOCK *ConnectEx3(char *hostname, UINT port, UINT timeout, bool *cancel_flag, char *nat_t_svc_name, UINT *nat_t_error_code, bool try_start_ssl, bool ssl_no_tls, bool no_get_hostname)
 {
 	return ConnectEx4(hostname, port, timeout, cancel_flag, nat_t_svc_name, nat_t_error_code, try_start_ssl, ssl_no_tls,
-		no_get_hostname, NULL);
+		no_get_hostname, NULL, NULL);
 }
-SOCK *ConnectEx4(char *hostname, UINT port, UINT timeout, bool *cancel_flag, char *nat_t_svc_name, UINT *nat_t_error_code, bool try_start_ssl, bool ssl_no_tls, bool no_get_hostname, IP *ret_ip)
+SOCK *ConnectEx4(char *hostname, UINT port, UINT timeout, bool *cancel_flag, char *nat_t_svc_name, UINT *nat_t_error_code, bool try_start_ssl, bool ssl_no_tls, bool no_get_hostname, IP *ret_ip, char *sni)
 {
 	SOCK *sock;
 	SOCKET s;
@@ -16459,6 +16466,7 @@ SOCK *ConnectEx4(char *hostname, UINT port, UINT timeout, bool *cancel_flag, cha
 
 			// p1: TCP
 			StrCpy(p1.Hostname, sizeof(p1.Hostname), hostname_original);
+			StrCpy(p1.Sni, sizeof(p1.Sni), sni);
 			Copy(&p1.Ip, &ip4, sizeof(IP));
 			p1.Port = port;
 			p1.Timeout = timeout;
